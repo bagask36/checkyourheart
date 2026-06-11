@@ -34,14 +34,14 @@
 <div class="row">
     @php
         $charts = [
-            ['id' => 'positiveByGender',   'title' => 'Positif - Jenis Kelamin',       'data' => $chartData['gender'],   'colors' => ['#4e73df','#f6c23e']],
-            ['id' => 'negativeByGender',   'title' => 'Negatif - Jenis Kelamin',       'data' => $chartData['gender'],   'colors' => ['#1cc88a','#e74a3b']],
-            ['id' => 'positiveByAgeGroup', 'title' => 'Positif - Usia',                'data' => $chartData['ageGroup'], 'colors' => ['#36b9cc','#f6c23e','#e74a3b','#4e73df','#858796','#1cc88a']],
-            ['id' => 'negativeByAgeGroup', 'title' => 'Negatif - Usia',                'data' => $chartData['ageGroup'], 'colors' => ['#36b9cc','#f6c23e','#e74a3b','#4e73df','#858796','#1cc88a']],
-            ['id' => 'positiveByTensi',    'title' => 'Positif - Tekanan Darah',       'data' => $chartData['tensi'],    'colors' => ['#4e73df','#f6c23e']],
-            ['id' => 'negativeByTensi',    'title' => 'Negatif - Tekanan Darah',       'data' => $chartData['tensi'],    'colors' => ['#1cc88a','#e74a3b']],
-            ['id' => 'positiveByChol',     'title' => 'Positif - Kolesterol',          'data' => $chartData['chol'],     'colors' => ['#36b9cc','#f6c23e']],
-            ['id' => 'negativeByChol',     'title' => 'Negatif - Kolesterol',          'data' => $chartData['chol'],     'colors' => ['#e74a3b','#858796']],
+            ['id' => 'positiveByGender',   'title' => 'Berisiko - Jenis Kelamin',       'data' => $chartData['gender'],   'colors' => ['#4e73df','#f6c23e']],
+            ['id' => 'negativeByGender',   'title' => 'Tidak Berisiko - Jenis Kelamin',       'data' => $chartData['gender'],   'colors' => ['#1cc88a','#e74a3b']],
+            ['id' => 'positiveByAgeGroup', 'title' => 'Berisiko - Usia',                'data' => $chartData['ageGroup'], 'colors' => ['#36b9cc','#f6c23e','#e74a3b','#4e73df','#858796','#1cc88a']],
+            ['id' => 'negativeByAgeGroup', 'title' => 'Tidak Berisiko - Usia',                'data' => $chartData['ageGroup'], 'colors' => ['#36b9cc','#f6c23e','#e74a3b','#4e73df','#858796','#1cc88a']],
+            ['id' => 'positiveByTensi',    'title' => 'Berisiko - Tekanan Darah',       'data' => $chartData['tensi'],    'colors' => ['#4e73df','#f6c23e']],
+            ['id' => 'negativeByTensi',    'title' => 'Tidak Berisiko - Tekanan Darah',       'data' => $chartData['tensi'],    'colors' => ['#1cc88a','#e74a3b']],
+            ['id' => 'positiveByChol',     'title' => 'Berisiko - Kolesterol',          'data' => $chartData['chol'],     'colors' => ['#36b9cc','#f6c23e']],
+            ['id' => 'negativeByChol',     'title' => 'Tidak Berisiko - Kolesterol',          'data' => $chartData['chol'],     'colors' => ['#e74a3b','#858796']],
         ];
     @endphp
 
@@ -95,7 +95,12 @@
                             @foreach($patients as $index => $p)
                             <tr>
                                 <td class="align-middle">{{ $patients->firstItem() + $index }}</td>
-                                <td class="align-middle">{{ $p->patient_name }}</td>
+                                <td class="align-middle">
+                                    <span id="name-{{ $p->id }}" class="patient-name">••••••</span>
+                                    <button type="button" class="btn btn-sm btn-link text-decoration-none" onclick="toggleName('{{ $p->id }}', '{{ $p->patient_name }}')">
+                                        <i class="fas fa-eye-slash" id="icon-{{ $p->id }}"></i>
+                                    </button>
+                                </td>
                                 <td class="align-middle">{{ $p->age }}</td>
                                 <td class="align-middle">{{ $p->sex == 1 ? 'Laki-laki' : 'Perempuan' }}</td>
                                 <td class="align-middle">{{ $p->trestbps }} mmHg</td>
@@ -109,7 +114,7 @@
                                 <td class="align-middle">{{ $p->thalach }} bpm</td>
                                 <td class="align-middle">
                                     @if($p->prediction == 1)
-                                        <span class="badge bg-danger">Risiko Tinggi</span>
+                                        <span class="badge bg-danger">Berisiko</span>
                                     @else
                                         <span class="badge bg-success">Tidak Berisiko</span>
                                     @endif
@@ -132,6 +137,20 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        function toggleName(id, actualName) {
+            const nameEl = document.getElementById('name-' + id);
+            const iconEl = document.getElementById('icon-' + id);
+    
+            if (nameEl.innerText === '••••••') {
+                nameEl.innerText = actualName;
+                iconEl.classList.remove('fa-eye-slash');
+                iconEl.classList.add('fa-eye');
+            } else {
+                nameEl.innerText = '••••••';
+                iconEl.classList.remove('fa-eye');
+                iconEl.classList.add('fa-eye-slash');
+            }
+        }
         document.addEventListener('DOMContentLoaded', function() {
             var chartData = @json($chartData);
 

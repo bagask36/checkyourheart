@@ -7,7 +7,7 @@
     <div class="row mb-4">
         <div class="col-12">
             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Edukasi Pencegahan Penyakit Jantung</h4>
+                <h4 class="mb-sm-0">Edukasi Penyakit Jantung</h4>
             </div>
         </div>
     </div>
@@ -17,9 +17,10 @@
         <div class="col-12">
             <div class="card bg-soft-danger border-0">
                 <div class="card-body">
-                    <h5 class="card-title text-danger mb-2">Pentingnya Menjaga Kesehatan Jantung</h5>
+                    <h5 class="card-title text-danger mb-2">Lindungi Jantung Anda: Mulai dari Gaya Hidup Sehat 
+                    </h5>
                     <p class="text-muted mb-0">
-                        Penyakit jantung adalah salah satu penyebab kematian tertinggi di dunia. Gaya hidup tidak sehat dapat meningkatkan risikonya. Terapkan pola hidup sehat sejak dini untuk mencegahnya.
+                        Penyakit jantung merupakan salah satu penyebab kematian tertinggi di dunia. Risiko ini meningkat akibat pola hidup yang tidak sehat. Mulailah menjaga jantung sejak dini dengan menerapkan gaya hidup sehat secara konsisten.
                     </p>
                 </div>
             </div>
@@ -37,7 +38,7 @@
                     'text'  => 'Perbanyak buah, sayur, biji-bijian, dan makanan rendah lemak jenuh. Kurangi garam & gula berlebih.'
                 ],
                 [
-                    'color' => 'primary',
+                    'color' => 'pink',
                     'icon'  => 'fa-person-walking',
                     'title' => '2. Rutin Berolahraga',
                     'text'  => 'Olahraga ringan (jalan kaki, jogging, bersepeda) 30 menit/hari, minimal 5× seminggu.'
@@ -52,8 +53,8 @@
                     'color' => 'warning',
                     'icon'  => 'fa-heart-pulse',
                     'title' => '4. Cek Tekanan Darah & Kolesterol',
-                    'text'  => 'Pantau tekanan darah dan kadar kolesterol secara rutin untuk deteksi dini.'
-                ],
+                    'text'  => 'Pantau tekanan darah dan kadar kolesterol secara rutin untuk deteksi dini. Dilansir dari Halodoc bahwa tekanan darah ideal dewasa adalah 90/60–120/80mmHg, dan kadar kolesterol total sebaiknya <200mg/dL'
+                ],        
                 [
                     'color' => 'info',
                     'icon'  => 'fa-spa',
@@ -73,7 +74,7 @@
                             </div>
                         </div>
                         <div class="flex-grow-1">
-                            <h5 class="fs-6 fw-semibold text-{{ $tip['color'] }} mb-1">{{ $tip['title'] }}</h5>
+                            <h5 class="fs-6 fw-semibold text-body mb-1">{{ $tip['title'] }}</h5>
                             <p class="text-muted small mb-0">{{ $tip['text'] }}</p>
                         </div>
                     </div>
