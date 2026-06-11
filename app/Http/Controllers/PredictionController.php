@@ -19,7 +19,7 @@ class PredictionController extends Controller
         $validated = $this->validatePrediction($request);
 
         try {
-            $response = Http::post('http://127.0.0.1:5000/predict', $validated);
+            $response = Http::post('http://127.0.0.1:5001/predict', $validated);
 
             if ($response->successful()) {
                 $data = $response->json();
