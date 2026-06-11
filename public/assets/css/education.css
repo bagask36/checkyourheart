@@ -1,0 +1,315 @@
+/* Education page — no ScrollReveal; CSS-only entrance */
+.education-page {
+    animation: eduFadeIn 0.45s ease-out both;
+}
+
+@keyframes eduFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.edu-hero {
+    background: linear-gradient(135deg, #1d3557 0%, #457b9d 55%, #e63946 120%);
+    border-radius: 1rem;
+    color: #fff;
+    padding: 1.75rem 2rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.edu-hero::after {
+    content: "";
+    position: absolute;
+    right: -2rem;
+    top: -2rem;
+    width: 10rem;
+    height: 10rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.edu-hero-icon {
+    width: 3.25rem;
+    height: 3.25rem;
+    border-radius: 0.875rem;
+    background: rgba(255, 255, 255, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.edu-hero h4 {
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+}
+
+.edu-hero p {
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 0;
+    max-width: 42rem;
+}
+
+.edu-facts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 767.98px) {
+    .edu-facts {
+        grid-template-columns: 1fr;
+    }
+}
+
+.edu-fact-card {
+    background: var(--page-surface);
+    border: 1px solid var(--page-border);
+    border-radius: 0.875rem;
+    padding: 1.15rem 1.25rem;
+    box-shadow: 0 4px 16px var(--page-shadow);
+    border-left: 3px solid var(--page-primary);
+}
+
+.edu-fact-card:nth-child(2) {
+    border-left-color: var(--page-accent);
+}
+
+.edu-fact-card:nth-child(3) {
+    border-left-color: var(--page-success);
+}
+
+.edu-fact-value {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--page-text);
+    margin-bottom: 0.2rem;
+}
+
+.edu-fact-label {
+    font-size: 0.78rem;
+    color: var(--page-muted);
+    margin: 0;
+    line-height: 1.45;
+}
+
+.edu-intro-banner {
+    background: var(--page-intro-bg);
+    border: 1px solid var(--page-intro-border);
+    border-radius: 1rem;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+}
+
+.edu-intro-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.65rem;
+    background: var(--page-primary-soft);
+    color: var(--page-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.edu-intro-banner h5 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--page-text);
+    margin-bottom: 0.35rem;
+}
+
+.edu-intro-banner p {
+    font-size: 0.85rem;
+    color: var(--page-muted);
+    margin: 0;
+    line-height: 1.55;
+}
+
+.edu-section-header {
+    margin-bottom: 1rem;
+}
+
+.edu-section-header h5 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--page-text);
+    margin-bottom: 0.2rem;
+}
+
+.edu-section-header p {
+    font-size: 0.8rem;
+    color: var(--page-muted);
+    margin: 0;
+}
+
+.edu-tips-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 767.98px) {
+    .edu-tips-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.edu-tip-card {
+    background: var(--page-surface);
+    border: 1px solid var(--page-border);
+    border-radius: 1rem;
+    padding: 1.25rem;
+    display: flex;
+    gap: 1rem;
+    box-shadow: 0 4px 16px var(--page-shadow);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.edu-tip-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px var(--page-shadow-hover);
+}
+
+.edu-tip-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--tip-accent, var(--page-primary));
+}
+
+.edu-tip-icon-wrap {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 0.65rem;
+    background: var(--tip-accent-soft, var(--page-primary-soft));
+    color: var(--tip-accent, var(--page-primary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+}
+
+.edu-tip-body h6 {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--page-text);
+    margin-bottom: 0.4rem;
+}
+
+.edu-tip-body p {
+    font-size: 0.82rem;
+    color: var(--page-muted);
+    margin: 0;
+    line-height: 1.55;
+}
+
+.edu-cta {
+    background: linear-gradient(135deg, #1d3557, #457b9d);
+    border-radius: 1rem;
+    padding: 1.5rem 1.75rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.edu-cta h5 {
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+}
+
+.edu-cta p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.84rem;
+    margin: 0;
+}
+
+.edu-cta-btn {
+    background: var(--page-cta-btn-bg);
+    color: var(--page-cta-btn-text);
+    border: none;
+    border-radius: 0.5rem;
+    padding: 0.55rem 1.15rem;
+    font-size: 0.84rem;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    white-space: nowrap;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.edu-cta-btn:hover {
+    color: var(--page-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.edu-warning-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 991.98px) {
+    .edu-warning-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 575.98px) {
+    .edu-warning-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.edu-warning-item {
+    background: var(--page-warning-bg);
+    border: 1px solid var(--page-warning-border);
+    border-radius: 0.75rem;
+    padding: 0.85rem 1rem;
+    text-align: center;
+}
+
+.edu-warning-item i {
+    color: var(--page-warning-icon);
+    font-size: 1.1rem;
+    margin-bottom: 0.4rem;
+}
+
+.edu-warning-item p {
+    font-size: 0.75rem;
+    color: var(--page-warning-text);
+    margin: 0;
+    font-weight: 500;
+    line-height: 1.4;
+}

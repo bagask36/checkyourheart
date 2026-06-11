@@ -92,13 +92,6 @@
                                 
                                 <div class="dropdown-divider"></div>
 
-                                <!-- Theme Settings -->
-                                <a href="#" class="dropdown-item" data-bs-toggle="offcanvas" data-bs-target="#theme-settings-offcanvas">
-                                    <i class="ri-settings-3-line align-middle me-1"></i> Theme Settings
-                                </a>
-
-                                <div class="dropdown-divider"></div>
-
                                 <!-- Logout -->
                                 <a href="#" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#logoutModal">
                                     <i class="ri-shut-down-line align-middle me-1"></i> Logout

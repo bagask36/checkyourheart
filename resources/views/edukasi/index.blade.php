@@ -1,85 +1,142 @@
 @extends('template.index')
 
 @section('title', 'Edukasi Pencegahan Penyakit Jantung')
+@section('disable_scroll_reveal')
+@section('css')
+<link href="{{ asset('assets/css/education.css') }}" rel="stylesheet" type="text/css" />
+@endsection
 
 @section('content')
-    {{-- Page title --}}
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                <h4 class="mb-sm-0">Edukasi Penyakit Jantung</h4>
+@php
+    $tips = [
+        [
+            'num'   => 1,
+            'accent' => '#2a9d8f',
+            'icon'  => 'fa-apple-whole',
+            'title' => 'Konsumsi Makanan Sehat',
+            'text'  => 'Perbanyak buah, sayur, biji-bijian, dan makanan rendah lemak jenuh. Kurangi garam dan gula berlebih.',
+        ],
+        [
+            'num'   => 2,
+            'accent' => '#457b9d',
+            'icon'  => 'fa-person-walking',
+            'title' => 'Rutin Berolahraga',
+            'text'  => 'Olahraga ringan seperti jalan kaki, jogging, atau bersepeda selama 30 menit per hari, minimal 5 kali seminggu.',
+        ],
+        [
+            'num'   => 3,
+            'accent' => '#e63946',
+            'icon'  => 'fa-ban-smoking',
+            'title' => 'Hindari Merokok',
+            'text'  => 'Merokok merusak pembuluh darah dan meningkatkan risiko serangan jantung secara signifikan.',
+        ],
+        [
+            'num'   => 4,
+            'accent' => '#e9c46a',
+            'icon'  => 'fa-heart-pulse',
+            'title' => 'Cek Tekanan Darah & Kolesterol',
+            'text'  => 'Pantau tekanan darah dan kolesterol secara rutin. Tekanan darah ideal dewasa 90/60–120/80 mmHg, kolesterol total ideal di bawah 200 mg/dL.',
+        ],
+        [
+            'num'   => 5,
+            'accent' => '#6a4c93',
+            'icon'  => 'fa-spa',
+            'title' => 'Kelola Stres dengan Baik',
+            'text'  => 'Stres kronis dapat mempengaruhi tekanan darah. Coba relaksasi, meditasi, atau lakukan hobi yang menyenangkan.',
+        ],
+    ];
+
+    $warnings = [
+        ['icon' => 'fa-heart-crack', 'text' => 'Nyeri dada atau sesak napas'],
+        ['icon' => 'fa-circle-exclamation', 'text' => 'Pusing atau pingsan mendadak'],
+        ['icon' => 'fa-lungs', 'text' => 'Sesak napas saat beraktivitas'],
+        ['icon' => 'fa-heart-pulse', 'text' => 'Detak jantung tidak teratur'],
+    ];
+@endphp
+
+<div class="education-page container-fluid">
+
+    {{-- Hero --}}
+    <div class="edu-hero">
+        <div class="d-flex align-items-start gap-3 position-relative" style="z-index: 1;">
+            <div class="edu-hero-icon">
+                <i class="fas fa-book-medical"></i>
+            </div>
+            <div>
+                <h4>Edukasi Pencegahan Penyakit Jantung</h4>
+                <p>Penyakit jantung merupakan salah satu penyebab kematian tertinggi di dunia. Pelajari cara mencegahnya dan jaga kesehatan jantung Anda sejak dini.</p>
             </div>
         </div>
     </div>
 
-    {{-- Intro card --}}
-    <div class="row mb-4">
-        <div class="col-12">
-            <div class="card bg-soft-danger border-0">
-                <div class="card-body">
-                    <h5 class="card-title text-danger mb-2">Lindungi Jantung Anda: Mulai dari Gaya Hidup Sehat 
-                    </h5>
-                    <p class="text-muted mb-0">
-                        Penyakit jantung merupakan salah satu penyebab kematian tertinggi di dunia. Risiko ini meningkat akibat pola hidup yang tidak sehat. Mulailah menjaga jantung sejak dini dengan menerapkan gaya hidup sehat secara konsisten.
-                    </p>
-                </div>
-            </div>
+    {{-- Quick facts --}}
+    <div class="edu-facts">
+        <div class="edu-fact-card">
+            <div class="edu-fact-value">#1</div>
+            <p class="edu-fact-label">Penyakit jantung adalah penyebab kematian utama di dunia</p>
+        </div>
+        <div class="edu-fact-card">
+            <div class="edu-fact-value">80%</div>
+            <p class="edu-fact-label">Serangan jantung dapat dicegah dengan gaya hidup sehat</p>
+        </div>
+        <div class="edu-fact-card">
+            <div class="edu-fact-value">30 min</div>
+            <p class="edu-fact-label">Olahraga ringan per hari sudah cukup membantu jantung sehat</p>
         </div>
     </div>
 
-    {{-- Prevention tips --}}
-    <div class="row">
-        @php
-            $tips = [
-                [
-                    'color' => 'success',
-                    'icon'  => 'fa-apple-whole',
-                    'title' => '1. Konsumsi Makanan Sehat',
-                    'text'  => 'Perbanyak buah, sayur, biji-bijian, dan makanan rendah lemak jenuh. Kurangi garam & gula berlebih.'
-                ],
-                [
-                    'color' => 'pink',
-                    'icon'  => 'fa-person-walking',
-                    'title' => '2. Rutin Berolahraga',
-                    'text'  => 'Olahraga ringan (jalan kaki, jogging, bersepeda) 30 menit/hari, minimal 5× seminggu.'
-                ],
-                [
-                    'color' => 'danger',
-                    'icon'  => 'fa-ban-smoking',
-                    'title' => '3. Hindari Merokok',
-                    'text'  => 'Merokok merusak pembuluh darah dan meningkatkan risiko serangan jantung.'
-                ],
-                [
-                    'color' => 'warning',
-                    'icon'  => 'fa-heart-pulse',
-                    'title' => '4. Cek Tekanan Darah & Kolesterol',
-                    'text'  => 'Pantau tekanan darah dan kadar kolesterol secara rutin untuk deteksi dini. Dilansir dari Halodoc bahwa tekanan darah ideal dewasa adalah 90/60–120/80mmHg, dan kadar kolesterol total sebaiknya <200mg/dL'
-                ],        
-                [
-                    'color' => 'info',
-                    'icon'  => 'fa-spa',
-                    'title' => '5. Kelola Stres dengan Baik',
-                    'text'  => 'Stres kronis dapat mempengaruhi tekanan darah. Coba relaksasi, meditasi, atau hobi menyenangkan.'
-                ],
-            ];
-        @endphp
+    {{-- Intro --}}
+    <div class="edu-intro-banner">
+        <div class="edu-intro-icon"><i class="fas fa-hand-holding-heart"></i></div>
+        <div>
+            <h5>Lindungi Jantung Anda: Mulai dari Gaya Hidup Sehat</h5>
+            <p>Risiko penyakit jantung meningkat akibat pola hidup tidak sehat — kurang olahraga, makan berlebihan, merokok, dan stres. Mulailah menjaga jantung dengan menerapkan kebiasaan sehat secara konsisten.</p>
+        </div>
+    </div>
 
+    {{-- Warning signs --}}
+    <div class="edu-section-header">
+        <h5><i class="fas fa-triangle-exclamation text-warning me-1"></i> Tanda Bahaya yang Perlu Diwaspadai</h5>
+        <p>Segera periksakan diri ke dokter jika Anda mengalami gejala berikut</p>
+    </div>
+    <div class="edu-warning-grid">
+        @foreach($warnings as $warning)
+            <div class="edu-warning-item">
+                <i class="fas {{ $warning['icon'] }} d-block"></i>
+                <p>{{ $warning['text'] }}</p>
+            </div>
+        @endforeach
+    </div>
+
+    {{-- Tips --}}
+    <div class="edu-section-header">
+        <h5>5 Langkah Pencegahan Penyakit Jantung</h5>
+        <p>Terapkan kebiasaan sehat berikut untuk menjaga kesehatan jantung</p>
+    </div>
+    <div class="edu-tips-grid">
         @foreach($tips as $tip)
-            <div class="col-xl-6 col-lg-6 mb-4">
-                <div class="card h-100 shadow-sm border-0 bg-light bg-gradient hover-shadow">
-                    <div class="card-body d-flex align-items-start">
-                        <div class="me-3">
-                            <div class="avatar-sm bg-{{ $tip['color'] }} bg-gradient rounded-circle d-flex align-items-center justify-content-center">
-                                <i class="fa-solid {{ $tip['icon'] }} text-white"></i>
-                            </div>
-                        </div>
-                        <div class="flex-grow-1">
-                            <h5 class="fs-6 fw-semibold text-body mb-1">{{ $tip['title'] }}</h5>
-                            <p class="text-muted small mb-0">{{ $tip['text'] }}</p>
-                        </div>
-                    </div>
+            <div class="edu-tip-card" style="--tip-accent: {{ $tip['accent'] }}; --tip-accent-soft: {{ $tip['accent'] }}1a;">
+                <div class="edu-tip-icon-wrap">
+                    <i class="fas {{ $tip['icon'] }}"></i>
+                </div>
+                <div class="edu-tip-body">
+                    <h6>{{ $tip['num'] }}. {{ $tip['title'] }}</h6>
+                    <p>{{ $tip['text'] }}</p>
                 </div>
             </div>
         @endforeach
     </div>
+
+    {{-- CTA --}}
+    <div class="edu-cta">
+        <div>
+            <h5>Ingin Tahu Risiko Penyakit Jantung Anda?</h5>
+            <p>Gunakan fitur prediksi untuk menganalisis risiko berdasarkan data pemeriksaan medis.</p>
+        </div>
+        <a href="{{ route('predict.form') }}" class="edu-cta-btn">
+            <i class="fas fa-stethoscope"></i> Cek Risiko Sekarang
+        </a>
+    </div>
+
+</div>
 @endsection

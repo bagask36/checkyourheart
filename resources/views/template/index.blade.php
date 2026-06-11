@@ -1,6 +1,6 @@
 
 <!doctype html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable" data-theme="default" data-theme-colors="default">
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable" data-theme="corporate" data-theme-colors="default">
 
 <head>
 
@@ -20,6 +20,18 @@
 
     <!-- Layout config Js -->
     <script src="{{ asset('assets') }}/js/layout.js"></script>
+    <!-- Restore dark mode from localStorage (survives layout.js sessionStorage reset) -->
+    <script>
+        (function () {
+            try {
+                var theme = localStorage.getItem('data-bs-theme') || sessionStorage.getItem('data-bs-theme');
+                if (theme === 'dark') {
+                    document.documentElement.setAttribute('data-bs-theme', 'dark');
+                    sessionStorage.setItem('data-bs-theme', 'dark');
+                }
+            } catch (e) {}
+        })();
+    </script>
     <!-- Bootstrap Css -->
     <link href="{{ asset('assets') }}/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
@@ -28,6 +40,7 @@
     <link href="{{ asset('assets') }}/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
     <link href="{{ asset('assets') }}/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/css/pages-theme.css') }}" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     @yield('css')
 </head>
@@ -48,7 +61,7 @@
                     </div>
                     <div class="modal-body">
                         <div class="mt-2 text-center">
-                            <lord-icon src="../../../../cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
+                            <i class="ri-error-warning-line text-warning" style="font-size: 4rem;"></i>
                             <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
                                 <h4>Are you sure ?</h4>
                                 <p class="text-muted mx-4 mb-0">Are you sure you want to remove this Notification ?</p>
@@ -102,12 +115,6 @@
         </div>
     </div>
 
-    <div class="customizer-setting d-none d-md-block">
-        <div class="btn-info rounded-pill shadow-lg btn btn-icon btn-lg p-2" data-bs-toggle="offcanvas" data-bs-target="#theme-settings-offcanvas" aria-controls="theme-settings-offcanvas">
-            <i class='mdi mdi-spin mdi-cog-outline fs-22'></i>
-        </div>
-    </div>
-
     <!-- Logout Confirmation Modal -->
     <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -130,9 +137,6 @@
     </div>
     </div>
 
-    <!-- Theme Settings -->
-    @include('template.theme')
-
     <!-- JAVASCRIPT -->
     <script src="{{ asset('assets') }}/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('assets') }}/libs/simplebar/simplebar.min.js"></script>
@@ -141,23 +145,13 @@
     <script src="{{ asset('assets') }}/js/pages/plugins/lord-icon-2.1.0.js"></script>
     <script src="{{ asset('assets') }}/js/plugins.js"></script>
 
-    <!-- apexcharts -->
-    <script src="{{ asset('assets') }}/libs/apexcharts/apexcharts.min.js"></script>
-
-    <!-- Vector map-->
-    <script src="{{ asset('assets') }}/libs/jsvectormap/js/jsvectormap.min.js"></script>
-    <script src="{{ asset('assets') }}/libs/jsvectormap/maps/world-merc.js"></script>
-
-    <!--Swiper slider js-->
-    <script src="{{ asset('assets') }}/libs/swiper/swiper-bundle.min.js"></script>
-
-    <!-- Dashboard init -->
-    <script src="{{ asset('assets') }}/js/pages/dashboard-ecommerce.init.js"></script>
-
     <!-- App js -->
     <script src="{{ asset('assets') }}/js/app.js"></script>
+    <script src="{{ asset('assets/js/theme-persist.js') }}"></script>
+    @unless(View::hasSection('disable_scroll_reveal'))
     <script src="https://unpkg.com/scrollreveal"></script>
     <script src="{{ asset('assets') }}/js/scroll.js"></script>
+    @endunless
 
     @yield('scripts')
 </body>

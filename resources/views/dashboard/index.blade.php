@@ -1,244 +1,330 @@
 @extends('template.index')
 
 @section('title', 'Dashboard')
+@section('disable_scroll_reveal')
+@section('css')
+<link href="{{ asset('assets/css/dashboard.css') }}" rel="stylesheet" type="text/css" />
+@endsection
+
+@php
+    $totalPatients = $patients->total();
+    $atRisk = array_sum($chartData['gender']['positiveValues']);
+    $notAtRisk = array_sum($chartData['gender']['negativeValues']);
+
+    $chartGroups = [
+        [
+            'title' => 'Jenis Kelamin',
+            'icon'  => 'fa-venus-mars',
+            'labels' => $chartData['gender']['labels'],
+            'positive' => ['id' => 'positiveByGender', 'values' => $chartData['gender']['positiveValues'], 'colors' => ['#457b9d', '#e9c46a']],
+            'negative' => ['id' => 'negativeByGender', 'values' => $chartData['gender']['negativeValues'], 'colors' => ['#2a9d8f', '#e63946']],
+        ],
+        [
+            'title' => 'Kelompok Usia',
+            'icon'  => 'fa-calendar',
+            'labels' => $chartData['ageGroup']['labels'],
+            'positive' => ['id' => 'positiveByAgeGroup', 'values' => $chartData['ageGroup']['positiveValues'], 'colors' => ['#457b9d', '#e9c46a', '#e63946', '#2a9d8f', '#1d3557', '#a8dadc']],
+            'negative' => ['id' => 'negativeByAgeGroup', 'values' => $chartData['ageGroup']['negativeValues'], 'colors' => ['#457b9d', '#e9c46a', '#e63946', '#2a9d8f', '#1d3557', '#a8dadc']],
+        ],
+        [
+            'title' => 'Tekanan Darah',
+            'icon'  => 'fa-heart-pulse',
+            'labels' => $chartData['tensi']['labels'],
+            'positive' => ['id' => 'positiveByTensi', 'values' => $chartData['tensi']['positiveValues'], 'colors' => ['#e63946', '#457b9d']],
+            'negative' => ['id' => 'negativeByTensi', 'values' => $chartData['tensi']['negativeValues'], 'colors' => ['#2a9d8f', '#457b9d']],
+        ],
+        [
+            'title' => 'Kolesterol',
+            'icon'  => 'fa-droplet',
+            'labels' => $chartData['chol']['labels'],
+            'positive' => ['id' => 'positiveByChol', 'values' => $chartData['chol']['positiveValues'], 'colors' => ['#e63946', '#457b9d']],
+            'negative' => ['id' => 'negativeByChol', 'values' => $chartData['chol']['negativeValues'], 'colors' => ['#2a9d8f', '#6c757d']],
+        ],
+    ];
+@endphp
 
 @section('content')
-<div class="row">
-    <div class="col-12">
-        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-            <h4 class="mb-sm-0">Dashboard Prediksi Penyakit Jantung</h4>
+<div class="dashboard-page container-fluid">
+
+    {{-- Hero --}}
+    <div class="dash-hero">
+        <div class="d-flex align-items-start gap-3 position-relative" style="z-index: 1;">
+            <div class="dash-hero-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="flex-grow-1">
+                <h4>Selamat Datang, {{ Auth::user()->name }}!</h4>
+                <p>Ringkasan data prediksi penyakit jantung. Pantau statistik pasien dan tren risiko dari pemeriksaan yang telah dilakukan.</p>
+            </div>
+            <a href="{{ route('predict.form') }}" class="dash-btn-predict d-none d-md-inline-flex">
+                <i class="fas fa-plus"></i> Prediksi Baru
+            </a>
         </div>
     </div>
-</div>
 
-<div class="row mb-4">
-    <div class="col-12">
-        <div class="card bg-soft-info border-0">
-            <div class="card-body">
-                <div class="d-flex align-items-center">
-                    <div class="flex-grow-1">
-                        <h5 class="card-title mb-1">Selamat Datang, {{ Auth::user()->name }}!</h5>
-                        <p class="card-text text-muted mb-0">
-                            Semoga harimu menyenangkan. Berikut ringkasan data prediksi penyakit jantung.
-                        </p>
-                    </div>
-                    <div>
-                        <i class="mdi mdi-heart-pulse fs-2 text-info"></i>
-                    </div>
+    {{-- Stats --}}
+    <div class="dash-stats">
+        <div class="dash-stat-card">
+            <div class="dash-stat-icon total"><i class="fas fa-users"></i></div>
+            <div>
+                <div class="dash-stat-value">{{ $totalPatients }}</div>
+                <p class="dash-stat-label">Total Pemeriksaan</p>
+            </div>
+        </div>
+        <div class="dash-stat-card">
+            <div class="dash-stat-icon risk"><i class="fas fa-triangle-exclamation"></i></div>
+            <div>
+                <div class="dash-stat-value">{{ $atRisk }}</div>
+                <p class="dash-stat-label">Berisiko</p>
+            </div>
+        </div>
+        <div class="dash-stat-card">
+            <div class="dash-stat-icon safe"><i class="fas fa-circle-check"></i></div>
+            <div>
+                <div class="dash-stat-value">{{ $notAtRisk }}</div>
+                <p class="dash-stat-label">Tidak Berisiko</p>
+            </div>
+        </div>
+        <div class="dash-stat-card">
+            <div class="dash-stat-icon action"><i class="fas fa-percent"></i></div>
+            <div>
+                <div class="dash-stat-value">{{ $totalPatients > 0 ? round(($atRisk / $totalPatients) * 100) : 0 }}%</div>
+                <p class="dash-stat-label">Persentase Risiko</p>
+            </div>
+        </div>
+    </div>
+
+    {{-- Charts --}}
+    <div class="dash-charts-section">
+        <div class="dash-section-header">
+            <div>
+                <h5>Analisis Statistik</h5>
+                <p>Distribusi pasien berdasarkan kategori pemeriksaan</p>
+            </div>
+        </div>
+        <div class="dash-charts-grid">
+            @foreach($chartGroups as $group)
+            <div class="dash-chart-card">
+                <div class="dash-chart-card-header">
+                    <span class="dash-chart-card-icon"><i class="fas {{ $group['icon'] }}"></i></span>
+                    <p class="dash-chart-card-title">{{ $group['title'] }}</p>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="row">
-    @php
-        $charts = [
-            ['id' => 'positiveByGender',   'title' => 'Berisiko - Jenis Kelamin',       'data' => $chartData['gender'],   'colors' => ['#4e73df','#f6c23e']],
-            ['id' => 'negativeByGender',   'title' => 'Tidak Berisiko - Jenis Kelamin',       'data' => $chartData['gender'],   'colors' => ['#1cc88a','#e74a3b']],
-            ['id' => 'positiveByAgeGroup', 'title' => 'Berisiko - Usia',                'data' => $chartData['ageGroup'], 'colors' => ['#36b9cc','#f6c23e','#e74a3b','#4e73df','#858796','#1cc88a']],
-            ['id' => 'negativeByAgeGroup', 'title' => 'Tidak Berisiko - Usia',                'data' => $chartData['ageGroup'], 'colors' => ['#36b9cc','#f6c23e','#e74a3b','#4e73df','#858796','#1cc88a']],
-            ['id' => 'positiveByTensi',    'title' => 'Berisiko - Tekanan Darah',       'data' => $chartData['tensi'],    'colors' => ['#4e73df','#f6c23e']],
-            ['id' => 'negativeByTensi',    'title' => 'Tidak Berisiko - Tekanan Darah',       'data' => $chartData['tensi'],    'colors' => ['#1cc88a','#e74a3b']],
-            ['id' => 'positiveByChol',     'title' => 'Berisiko - Kolesterol',          'data' => $chartData['chol'],     'colors' => ['#36b9cc','#f6c23e']],
-            ['id' => 'negativeByChol',     'title' => 'Tidak Berisiko - Kolesterol',          'data' => $chartData['chol'],     'colors' => ['#e74a3b','#858796']],
-        ];
-    @endphp
-
-    @foreach($charts as $chart)
-    <div class="col-xl-6 col-lg-6 mb-4">
-        <div class="card hoverable">
-            <div class="card-header bg-soft-primary border-0 text-center">
-                <h5 class="card-title mb-0">{{ $chart['title'] }}</h5>
-            </div>
-            <div class="card-body">
-                <div class="chartjs-chart d-flex flex-column align-items-center">
-                    <canvas id="{{ $chart['id'] }}" height="200"></canvas>
-                    <div class="mt-3">
-                        @foreach($chart['data']['labels'] as $i => $label)
-                            <div class="d-inline-flex align-items-center me-4 mb-2 mt-2">
-                                <span class="rounded-circle me-2" style="width:14px; height:14px; background-color: {{ $chart['colors'][$i] }}"></span>
-                                <small class="text-muted">{{ $label }}</small>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    @endforeach
-</div>
-
-<div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header bg-soft-secondary border-0">
-                <h5 class="card-title mb-0">Data Pasien</h5>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table id="patientsTable" class="table table-striped table-bordered">
-                        <thead>
-                            <tr>
-                                <th class="align-middle">No</th>
-                                <th class="align-middle">Nama Pasien</th>
-                                <th class="align-middle">Usia</th>
-                                <th class="align-middle">Jenis Kelamin</th>
-                                <th class="align-middle">Tekanan Darah</th>
-                                <th class="align-middle">Kolesterol</th>
-                                <th class="align-middle">Hasil EKG</th>
-                                <th class="align-middle">Denyut Jantung</th>
-                                <th class="align-middle">Prediksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($patients as $index => $p)
-                            <tr>
-                                <td class="align-middle">{{ $patients->firstItem() + $index }}</td>
-                                <td class="align-middle">
-                                    <span id="name-{{ $p->id }}" class="patient-name">••••••</span>
-                                    <button type="button" class="btn btn-sm btn-link text-decoration-none" onclick="toggleName('{{ $p->id }}', '{{ $p->patient_name }}')">
-                                        <i class="fas fa-eye-slash" id="icon-{{ $p->id }}"></i>
-                                    </button>
-                                </td>
-                                <td class="align-middle">{{ $p->age }}</td>
-                                <td class="align-middle">{{ $p->sex == 1 ? 'Laki-laki' : 'Perempuan' }}</td>
-                                <td class="align-middle">{{ $p->trestbps }} mmHg</td>
-                                <td class="align-middle">{{ $p->chol }} mg/dL</td>
-                                <td class="align-middle">
-                                    @if($p->restecg == 0) Normal
-                                    @elseif($p->restecg == 1) ST-T Abnormal
-                                    @else Hipertrofi Kiri
-                                    @endif
-                                </td>
-                                <td class="align-middle">{{ $p->thalach }} bpm</td>
-                                <td class="align-middle">
-                                    @if($p->prediction == 1)
-                                        <span class="badge bg-danger">Berisiko</span>
-                                    @else
-                                        <span class="badge bg-success">Tidak Berisiko</span>
-                                    @endif
-                                </td>
-                            </tr>
+                <div class="dash-chart-duo">
+                    <div class="dash-chart-pane">
+                        <div class="dash-chart-pane-label risk">Berisiko</div>
+                        <div class="dash-chart-canvas-wrap">
+                            <canvas id="{{ $group['positive']['id'] }}" height="160"></canvas>
+                        </div>
+                        <div class="dash-chart-legend">
+                            @foreach($group['labels'] as $i => $label)
+                                <span class="dash-chart-legend-item">
+                                    <span class="dash-chart-legend-dot" style="background: {{ $group['positive']['colors'][$i] ?? '#ccc' }}"></span>
+                                    {{ $label }}
+                                </span>
                             @endforeach
-                        </tbody>
-                    </table>
-                    <div class="mt-3">
-                        {{ $patients->links('pagination::bootstrap-5') }}
+                        </div>
+                    </div>
+                    <div class="dash-chart-pane">
+                        <div class="dash-chart-pane-label safe">Tidak Berisiko</div>
+                        <div class="dash-chart-canvas-wrap">
+                            <canvas id="{{ $group['negative']['id'] }}" height="160"></canvas>
+                        </div>
+                        <div class="dash-chart-legend">
+                            @foreach($group['labels'] as $i => $label)
+                                <span class="dash-chart-legend-item">
+                                    <span class="dash-chart-legend-dot" style="background: {{ $group['negative']['colors'][$i] ?? '#ccc' }}"></span>
+                                    {{ $label }}
+                                </span>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
+            @endforeach
         </div>
     </div>
+
+    {{-- Patient table --}}
+    <div class="dash-table-card">
+        <div class="dash-table-header">
+            <h5><i class="fas fa-table-list me-1 text-danger"></i> Data Pasien</h5>
+            <span>{{ $totalPatients }} total rekaman</span>
+        </div>
+
+        @if($patients->count() > 0)
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Nama Pasien</th>
+                            <th>Usia</th>
+                            <th>Kelamin</th>
+                            <th>Tekanan Darah</th>
+                            <th>Kolesterol</th>
+                            <th>EKG</th>
+                            <th>Denyut</th>
+                            <th>Prediksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($patients as $index => $p)
+                        <tr>
+                            <td>{{ $patients->firstItem() + $index }}</td>
+                            <td>
+                                <span id="name-{{ $p->id }}" class="patient-name">••••••</span>
+                                <button type="button" class="dash-name-toggle" data-patient-id="{{ $p->id }}" data-patient-name="{{ e($p->patient_name) }}" title="Tampilkan/sembunyikan nama">
+                                    <i class="fas fa-eye-slash" id="icon-{{ $p->id }}"></i>
+                                </button>
+                            </td>
+                            <td>{{ $p->age }} th</td>
+                            <td>{{ $p->sex == 1 ? 'Laki-laki' : 'Perempuan' }}</td>
+                            <td>{{ $p->trestbps }} mmHg</td>
+                            <td>{{ $p->chol }} mg/dL</td>
+                            <td>
+                                @if($p->restecg == 0) Normal
+                                @elseif($p->restecg == 1) ST-T Abnormal
+                                @else Hipertrofi Kiri
+                                @endif
+                            </td>
+                            <td>{{ $p->thalach }} bpm</td>
+                            <td>
+                                @if($p->prediction == 1)
+                                    <span class="dash-badge risk"><i class="fas fa-circle" style="font-size:0.4rem"></i> Berisiko</span>
+                                @else
+                                    <span class="dash-badge safe"><i class="fas fa-circle" style="font-size:0.4rem"></i> Aman</span>
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            <div class="dash-table-footer">
+                {{ $patients->links('pagination::bootstrap-5') }}
+            </div>
+        @else
+            <div class="dash-empty-state">
+                <div><i class="fas fa-inbox d-block"></i></div>
+                <p class="mb-2">Belum ada data pemeriksaan.</p>
+                <a href="{{ route('predict.form') }}" class="dash-btn-predict">
+                    <i class="fas fa-stethoscope"></i> Mulai Prediksi Pertama
+                </a>
+            </div>
+        @endif
+    </div>
+
 </div>
 @endsection
 
 @section('scripts')
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        function toggleName(id, actualName) {
-            const nameEl = document.getElementById('name-' + id);
-            const iconEl = document.getElementById('icon-' + id);
-    
-            if (nameEl.innerText === '••••••') {
-                nameEl.innerText = actualName;
-                iconEl.classList.remove('fa-eye-slash');
-                iconEl.classList.add('fa-eye');
-            } else {
-                nameEl.innerText = '••••••';
-                iconEl.classList.remove('fa-eye');
-                iconEl.classList.add('fa-eye-slash');
-            }
-        }
-        document.addEventListener('DOMContentLoaded', function() {
-            var chartData = @json($chartData);
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="application/json" id="chart-groups-data">@json($chartGroups)</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.dash-name-toggle').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                const id = btn.dataset.patientId;
+                const actualName = btn.dataset.patientName;
+                const nameEl = document.getElementById('name-' + id);
+                const iconEl = document.getElementById('icon-' + id);
 
-            function renderPie(id, labels, dataSet, bgColors) {
-                var ctx = document.getElementById(id).getContext('2d');
-                new Chart(ctx, {
-                    type: 'pie',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            data: dataSet,
-                            backgroundColor: bgColors
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        plugins: {
-                            legend: { display: false },
-                            tooltip: {
-                                backgroundColor: "#fff",
-                                titleColor: '#333',
-                                bodyColor: '#555',
-                                borderColor: '#ddd',
-                                borderWidth: 1,
-                                padding: 10,
-                                displayColors: false
-                            }
-                        },
-                        cutout: '75%'  // donut effect
-                    }
-                });
-            }
-
-            // Gender
-            renderPie(
-                'positiveByGender',
-                chartData.gender.labels,
-                chartData.gender.positiveValues,
-                ['#4e73df','#f6c23e']
-            );
-            renderPie(
-                'negativeByGender',
-                chartData.gender.labels,
-                chartData.gender.negativeValues,
-                ['#1cc88a','#e74a3b']
-            );
-
-            // Usia
-            renderPie(
-                'positiveByAgeGroup',
-                chartData.ageGroup.labels,
-                chartData.ageGroup.positiveValues,
-                ['#36b9cc','#f6c23e','#e74a3b','#4e73df','#858796','#1cc88a']
-            );
-            renderPie(
-                'negativeByAgeGroup',
-                chartData.ageGroup.labels,
-                chartData.ageGroup.negativeValues,
-                ['#36b9cc','#f6c23e','#e74a3b','#4e73df','#858796','#1cc88a']
-            );
-
-            // Tekanan Darah
-            renderPie(
-                'positiveByTensi',
-                chartData.tensi.labels,
-                chartData.tensi.positiveValues,
-                ['#4e73df','#f6c23e']
-            );
-            renderPie(
-                'negativeByTensi',
-                chartData.tensi.labels,
-                chartData.tensi.negativeValues,
-                ['#1cc88a','#e74a3b']
-            );
-
-            // Kolesterol
-            renderPie(
-                'positiveByChol',
-                chartData.chol.labels,
-                chartData.chol.positiveValues,
-                ['#36b9cc','#f6c23e']
-            );
-            renderPie(
-                'negativeByChol',
-                chartData.chol.labels,
-                chartData.chol.negativeValues,
-                ['#e74a3b','#858796']
-            );
+                if (nameEl.innerText === '••••••') {
+                    nameEl.innerText = actualName;
+                    iconEl.classList.remove('fa-eye-slash');
+                    iconEl.classList.add('fa-eye');
+                } else {
+                    nameEl.innerText = '••••••';
+                    iconEl.classList.remove('fa-eye');
+                    iconEl.classList.add('fa-eye-slash');
+                }
+            });
         });
-    </script>
+
+        const chartGroups = JSON.parse(document.getElementById('chart-groups-data').textContent);
+        const chartInstances = [];
+
+        function getPageThemeVar(name) {
+            const page = document.querySelector('.dashboard-page');
+            return page ? getComputedStyle(page).getPropertyValue(name).trim() : '';
+        }
+
+        function isDarkMode() {
+            return document.documentElement.getAttribute('data-bs-theme') === 'dark';
+        }
+
+        function destroyCharts() {
+            chartInstances.forEach(function (chart) { chart.destroy(); });
+            chartInstances.length = 0;
+        }
+
+        function renderDonut(id, labels, dataSet, bgColors) {
+            const el = document.getElementById(id);
+            if (!el) return;
+
+            const wrap = el.parentElement;
+            if (!wrap.querySelector('canvas')) {
+                wrap.innerHTML = '<canvas id="' + id + '" height="160"></canvas>';
+            }
+            const canvas = document.getElementById(id);
+            const total = dataSet.reduce(function (a, b) { return a + b; }, 0);
+
+            if (total === 0) {
+                wrap.innerHTML = '<p class="text-muted small mb-0 py-4">Belum ada data</p>';
+                return;
+            }
+
+            const chartBorder = getPageThemeVar('--page-chart-border') || (isDarkMode() ? '#2a3035' : '#ffffff');
+            const tooltipBg = getPageThemeVar('--page-surface') || (isDarkMode() ? '#212529' : '#ffffff');
+
+            chartInstances.push(new Chart(canvas.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: dataSet,
+                        backgroundColor: bgColors.slice(0, labels.length),
+                        borderWidth: 2,
+                        borderColor: chartBorder,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: tooltipBg,
+                            titleColor: getPageThemeVar('--page-text') || (isDarkMode() ? '#e9ecef' : '#1d3557'),
+                            bodyColor: getPageThemeVar('--page-muted') || (isDarkMode() ? '#adb5bd' : '#6c757d'),
+                            borderColor: getPageThemeVar('--page-border') || 'rgba(29,53,87,0.1)',
+                            borderWidth: 1,
+                            padding: 10,
+                        }
+                    },
+                    cutout: '68%',
+                }
+            }));
+        }
+
+        function renderAllCharts() {
+            destroyCharts();
+            chartGroups.forEach(function (group) {
+                renderDonut(group.positive.id, group.labels, group.positive.values, group.positive.colors);
+                renderDonut(group.negative.id, group.labels, group.negative.values, group.negative.colors);
+            });
+        }
+
+        renderAllCharts();
+
+        let lastTheme = document.documentElement.getAttribute('data-bs-theme');
+        window.addEventListener('resize', function () {
+            const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+            if (currentTheme !== lastTheme) {
+                lastTheme = currentTheme;
+                renderAllCharts();
+            }
+        });
+    });
+</script>
 @endsection
