@@ -18,9 +18,17 @@
         } catch (e) {}
     }
 
-    function animateThemeChange() {
-        document.documentElement.classList.add('theme-animating');
-        document.body && document.body.classList.add('theme-animating');
+    function animateThemeChange(nextTheme) {
+        var directionClass = nextTheme === 'dark' ? 'theme-to-dark' : 'theme-to-light';
+        var oppositeClass = nextTheme === 'dark' ? 'theme-to-light' : 'theme-to-dark';
+
+        document.documentElement.classList.remove(oppositeClass);
+        document.documentElement.classList.add('theme-animating', directionClass);
+
+        if (document.body) {
+            document.body.classList.remove(oppositeClass);
+            document.body.classList.add('theme-animating', directionClass);
+        }
 
         document.querySelectorAll('.light-dark-mode').forEach(function (btn) {
             btn.classList.add('is-switching-theme');
@@ -28,22 +36,30 @@
 
         window.clearTimeout(window.__themeAnimationTimer);
         window.__themeAnimationTimer = window.setTimeout(function () {
-            document.documentElement.classList.remove('theme-animating');
-            document.body && document.body.classList.remove('theme-animating');
+            document.documentElement.classList.remove('theme-animating', 'theme-to-dark', 'theme-to-light');
+
+            if (document.body) {
+                document.body.classList.remove('theme-animating', 'theme-to-dark', 'theme-to-light');
+            }
 
             document.querySelectorAll('.light-dark-mode').forEach(function (btn) {
                 btn.classList.remove('is-switching-theme');
             });
-        }, 420);
+        }, 560);
     }
 
     function applyTheme(theme, options) {
         if (theme === 'dark' || theme === 'light') {
             if (options && options.animate) {
-                animateThemeChange();
+                animateThemeChange(theme);
             }
             document.documentElement.setAttribute(STORAGE_KEY, theme);
             saveTheme(theme);
+            document.dispatchEvent(new CustomEvent('theme:changed', {
+                detail: {
+                    theme: theme
+                }
+            }));
         }
     }
 
@@ -86,7 +102,6 @@
                 var nextTheme = document.documentElement.getAttribute(STORAGE_KEY) === 'dark' ? 'light' : 'dark';
                 applyTheme(nextTheme, { animate: true });
                 updateToggleIcon(nextTheme);
-                window.dispatchEvent(new Event('resize'));
                 e.stopImmediatePropagation();
             }, true);
         });

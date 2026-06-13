@@ -13,6 +13,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     background: var(--auth-surface-alt);
+    position: relative;
+    isolation: isolate;
 }
 
 .auth-page,
@@ -30,6 +32,31 @@
 .auth-page .auth-page-footer,
 .auth-page .auth-terms {
     transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, transform 0.25s ease;
+}
+
+.auth-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    z-index: 120;
+}
+
+.theme-animating .auth-page::before {
+    animation-duration: 0.56s;
+    animation-fill-mode: both;
+    animation-timing-function: ease;
+}
+
+.theme-animating.theme-to-dark .auth-page::before {
+    background: radial-gradient(circle at center, rgba(69, 123, 157, 0.16), rgba(10, 13, 18, 0.3) 60%, rgba(6, 8, 11, 0.42));
+    animation-name: authThemeOverlayDark;
+}
+
+.theme-animating.theme-to-light .auth-page::before {
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.72), rgba(69, 123, 157, 0.08) 58%, rgba(250, 251, 252, 0.8));
+    animation-name: authThemeOverlayLight;
 }
 
 [data-bs-theme="dark"] .auth-page {
@@ -201,6 +228,20 @@
     transition: color 0.15s ease, border-color 0.15s ease;
 }
 
+@media (max-width: 991.98px) {
+    .auth-form-panel {
+        padding-top: 4.75rem;
+    }
+
+    .auth-theme-toggle {
+        position: fixed;
+        top: calc(env(safe-area-inset-top, 0px) + 1rem);
+        right: 1rem;
+        z-index: 140;
+        box-shadow: 0 10px 24px rgba(29, 53, 87, 0.16);
+    }
+}
+
 .auth-theme-toggle:hover {
     color: var(--auth-primary);
     border-color: var(--auth-primary);
@@ -230,6 +271,72 @@
 .theme-animating .auth-theme-toggle,
 .theme-animating .auth-password-rules {
     box-shadow: 0 0 0 1px rgba(69, 123, 157, 0.08), 0 16px 36px rgba(29, 53, 87, 0.12);
+}
+
+.theme-animating.theme-to-dark .auth-page .auth-brand-panel,
+.theme-animating.theme-to-dark .auth-page .auth-card,
+.theme-animating.theme-to-dark .auth-page .auth-password-rules,
+.theme-animating.theme-to-dark .auth-page .auth-theme-toggle,
+.theme-animating.theme-to-dark .auth-page .auth-page-footer {
+    animation: authThemeEnterDark 0.56s ease both;
+}
+
+.theme-animating.theme-to-light .auth-page .auth-brand-panel,
+.theme-animating.theme-to-light .auth-page .auth-card,
+.theme-animating.theme-to-light .auth-page .auth-password-rules,
+.theme-animating.theme-to-light .auth-page .auth-theme-toggle,
+.theme-animating.theme-to-light .auth-page .auth-page-footer {
+    animation: authThemeEnterLight 0.56s ease both;
+}
+
+@keyframes authThemeOverlayDark {
+    0% {
+        opacity: 0;
+    }
+    30% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes authThemeOverlayLight {
+    0% {
+        opacity: 0;
+    }
+    35% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes authThemeEnterDark {
+    0% {
+        opacity: 0.82;
+        transform: translateY(8px) scale(0.985);
+        filter: brightness(1.08) saturate(0.92);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: brightness(1) saturate(1);
+    }
+}
+
+@keyframes authThemeEnterLight {
+    0% {
+        opacity: 0.86;
+        transform: translateY(-8px) scale(1.015);
+        filter: brightness(0.96) saturate(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: brightness(1) saturate(1);
+    }
 }
 
 @keyframes authFadeIn {

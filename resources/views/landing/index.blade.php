@@ -133,40 +133,6 @@
 <script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <script src="https://unpkg.com/scrollreveal"></script>
 <script src="{{ asset('assets/js/theme-persist.js') }}"></script>
-<script>
-    if (typeof ScrollReveal !== 'undefined') {
-        var sr = ScrollReveal({
-            distance: '48px',
-            duration: 900,
-            easing: 'ease-out',
-            reset: false,
-            viewFactor: 0.2
-        });
-
-        sr.reveal('.reveal-hero', {
-            origin: 'top'
-        });
-
-        sr.reveal('.reveal-stats .landing-stat-card', {
-            origin: 'bottom',
-            interval: 150
-        });
-
-        sr.reveal('.reveal-title', {
-            origin: 'bottom',
-            delay: 100
-        });
-
-        sr.reveal('.landing-feature-card, .landing-step-card', {
-            origin: 'bottom',
-            interval: 150
-        });
-
-        sr.reveal('.reveal-cta', {
-            origin: 'bottom',
-            delay: 150
-        });
-    }
-</script>
+<script src="{{ asset('assets/js/pages/landing-reveal.js') }}"></script>
 </body>
 </html>
