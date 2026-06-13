@@ -1,8 +1,6 @@
 @extends('auth.layout')
 
 @section('auth_title', 'Daftar')
-@section('brand_heading', 'Mulai Perjalanan Kesehatan Jantung')
-@section('brand_description', 'Buat akun gratis untuk mengakses fitur prediksi risiko, dashboard statistik, dan materi edukasi kesehatan jantung.')
 @section('form_heading', 'Buat Akun Baru')
 @section('form_subheading', 'Isi data berikut untuk mendaftar')
 

@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'ml_api' => [
+        'url' => env('ML_API_URL', 'http://127.0.0.1:5001'),
+        'timeout' => env('ML_API_TIMEOUT', 30),
+    ],
+
 ];

@@ -28,30 +28,27 @@
 </head>
 
 <body>
+@php
+    $authContent = $authContent ?? ['brand' => null, 'features' => collect()];
+@endphp
     <div class="auth-page">
         {{-- Brand panel --}}
         <div class="auth-brand-panel">
             <div class="auth-brand-content">
-                <a href="{{ route('login') }}" class="auth-logo">
+                <a href="{{ route('landing') }}" class="auth-logo">
                     <span class="auth-logo-icon"><i class="fas fa-heart-pulse"></i></span>
                     <span class="auth-logo-text">Check Your Heart</span>
                 </a>
-                <h1>@yield('brand_heading')</h1>
-                <p>@yield('brand_description')</p>
+                <h1>@yield('brand_heading', $authContent['brand']?->title ?? 'Check Your Heart')</h1>
+                <p>@yield('brand_description', $authContent['brand']?->body ?? '')</p>
             </div>
             <div class="auth-features">
+                @foreach(($authContent['features'] ?? collect()) as $feature)
                 <div class="auth-feature-item">
-                    <i class="fas fa-brain"></i>
-                    <span>Prediksi risiko berbasis machine learning</span>
+                    <i class="fas {{ $feature->metaValue('icon', 'fa-heart') }}"></i>
+                    <span>{{ $feature->body }}</span>
                 </div>
-                <div class="auth-feature-item">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Dashboard statistik pemeriksaan pasien</span>
-                </div>
-                <div class="auth-feature-item">
-                    <i class="fas fa-book-medical"></i>
-                    <span>Edukasi pencegahan penyakit jantung</span>
-                </div>
+                @endforeach
             </div>
         </div>
 

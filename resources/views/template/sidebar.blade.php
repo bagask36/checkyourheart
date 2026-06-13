@@ -74,9 +74,28 @@
 
                         <li class="nav-item">
                             <a class="nav-link menu-link" href="{{ route('education') }}" aria-expanded="false" aria-controls="sidebarDashboards">
-                                <i class="ri-layout-3-line"></i> <span data-key="t-dashboards">Edukasi</span> <span class="badge badge-pill bg-danger" data-key="t-hot">Menu Baru</span>
+                                <i class="ri-layout-3-line"></i> <span data-key="t-dashboards">Edukasi</span>
                             </a>
                         </li>
+
+                        @if(Auth::user()->is_admin)
+                        <li class="menu-title"><span>Admin</span></li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" href="{{ route('admin.dashboard') }}">
+                                <i class="ri-settings-3-line"></i> <span>Admin Panel</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" href="{{ route('admin.content.index') }}">
+                                <i class="ri-file-edit-line"></i> <span>Kelola Konten CMS</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link menu-link" href="{{ route('admin.api-logs.index') }}">
+                                <i class="ri-server-line"></i> <span>Log Request API</span>
+                            </a>
+                        </li>
+                        @endif
                     </ul>
                 </div>
                 <!-- Sidebar -->

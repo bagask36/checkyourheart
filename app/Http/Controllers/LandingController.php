@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\ContentService;
 
-class EducationController extends Controller
+class LandingController extends Controller
 {
     public function __construct(private ContentService $content)
     {
@@ -12,8 +12,8 @@ class EducationController extends Controller
 
     public function index()
     {
-        return view('edukasi.index', [
-            'content' => $this->content->getEducationContent(),
+        return view('landing.index', [
+            'content' => $this->content->getLandingContent(),
         ]);
     }
 }

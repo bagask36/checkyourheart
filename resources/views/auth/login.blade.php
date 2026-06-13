@@ -1,8 +1,6 @@
 @extends('auth.layout')
 
 @section('auth_title', 'Masuk')
-@section('brand_heading', 'Jaga Kesehatan Jantung Anda')
-@section('brand_description', 'Platform prediksi risiko penyakit jantung untuk membantu deteksi dini dan edukasi kesehatan yang lebih baik.')
 @section('form_heading', 'Selamat Datang Kembali')
 @section('form_subheading', 'Masuk ke akun Anda untuk melanjutkan')
 
