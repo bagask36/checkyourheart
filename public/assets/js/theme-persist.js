@@ -18,18 +18,32 @@
         } catch (e) {}
     }
 
-    function applyTheme(theme) {
-        if (theme === 'dark' || theme === 'light') {
-            document.documentElement.setAttribute(STORAGE_KEY, theme);
-            saveTheme(theme);
-        }
+    function animateThemeChange() {
+        document.documentElement.classList.add('theme-animating');
+        document.body && document.body.classList.add('theme-animating');
+
+        document.querySelectorAll('.light-dark-mode').forEach(function (btn) {
+            btn.classList.add('is-switching-theme');
+        });
+
+        window.clearTimeout(window.__themeAnimationTimer);
+        window.__themeAnimationTimer = window.setTimeout(function () {
+            document.documentElement.classList.remove('theme-animating');
+            document.body && document.body.classList.remove('theme-animating');
+
+            document.querySelectorAll('.light-dark-mode').forEach(function (btn) {
+                btn.classList.remove('is-switching-theme');
+            });
+        }, 420);
     }
 
-    function syncThemeFromDom() {
-        var theme = document.documentElement.getAttribute(STORAGE_KEY);
+    function applyTheme(theme, options) {
         if (theme === 'dark' || theme === 'light') {
+            if (options && options.animate) {
+                animateThemeChange();
+            }
+            document.documentElement.setAttribute(STORAGE_KEY, theme);
             saveTheme(theme);
-            updateToggleIcon(theme);
         }
     }
 
@@ -70,7 +84,7 @@
         document.querySelectorAll('.light-dark-mode').forEach(function (btn) {
             btn.addEventListener('click', function (e) {
                 var nextTheme = document.documentElement.getAttribute(STORAGE_KEY) === 'dark' ? 'light' : 'dark';
-                applyTheme(nextTheme);
+                applyTheme(nextTheme, { animate: true });
                 updateToggleIcon(nextTheme);
                 window.dispatchEvent(new Event('resize'));
                 e.stopImmediatePropagation();

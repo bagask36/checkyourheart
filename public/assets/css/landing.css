@@ -10,6 +10,23 @@
     --lp-border: rgba(29, 53, 87, 0.1);
 }
 
+.landing-page,
+.landing-page .landing-nav,
+.landing-page .landing-logo,
+.landing-page .landing-nav-links a,
+.landing-page .landing-btn,
+.landing-page .landing-hero-btn,
+.landing-page .landing-stat-card,
+.landing-page .landing-feature-card,
+.landing-page .landing-step-card,
+.landing-page .landing-section-title h2,
+.landing-page .landing-section-title p,
+.landing-page .landing-cta,
+.landing-page .landing-footer,
+.landing-page .landing-theme-btn {
+    transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, transform 0.25s ease;
+}
+
 [data-bs-theme="dark"] .landing-page {
     --lp-dark: #e9ecef;
     --lp-muted: #adb5bd;
@@ -61,6 +78,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.landing-logo-icon,
+.landing-feature-icon,
+.landing-step-num {
+    transition: background-color 0.35s ease, color 0.35s ease, transform 0.35s ease;
 }
 
 .landing-nav-links {
@@ -366,4 +389,22 @@
     border-color: rgba(230, 57, 70, 0.28);
     box-shadow: 0 10px 20px rgba(29, 53, 87, 0.08);
     transform: translateY(-1px);
+}
+
+.landing-theme-btn i {
+    transition: transform 0.35s ease, opacity 0.25s ease;
+}
+
+.theme-animating .landing-theme-btn i,
+.landing-theme-btn.is-switching-theme i {
+    transform: rotate(180deg) scale(1.08);
+}
+
+.theme-animating .landing-page .landing-nav,
+.theme-animating .landing-page .landing-stat-card,
+.theme-animating .landing-page .landing-feature-card,
+.theme-animating .landing-page .landing-step-card,
+.theme-animating .landing-page .landing-footer,
+.theme-animating .landing-page .landing-theme-btn {
+    box-shadow: 0 0 0 1px rgba(69, 123, 157, 0.08), 0 14px 30px rgba(29, 53, 87, 0.08);
 }

@@ -15,6 +15,23 @@
     background: var(--auth-surface-alt);
 }
 
+.auth-page,
+.auth-page .auth-form-panel,
+.auth-page .auth-card,
+.auth-page .auth-card-header h2,
+.auth-page .auth-card-header p,
+.auth-page .auth-form .form-label,
+.auth-page .auth-form .form-control,
+.auth-page .auth-theme-toggle,
+.auth-page .auth-password-rules,
+.auth-page .auth-password-rules h6,
+.auth-page .auth-password-rules p,
+.auth-page .auth-footer-link,
+.auth-page .auth-page-footer,
+.auth-page .auth-terms {
+    transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, transform 0.25s ease;
+}
+
 [data-bs-theme="dark"] .auth-page {
     --auth-dark: #e9ecef;
     --auth-muted: #adb5bd;
@@ -94,6 +111,11 @@
     align-items: center;
     justify-content: center;
     font-size: 1.25rem;
+}
+
+.auth-logo-icon,
+.auth-feature-item i {
+    transition: background-color 0.35s ease, color 0.35s ease, transform 0.35s ease;
 }
 
 .auth-logo-text {
@@ -184,6 +206,15 @@
     border-color: var(--auth-primary);
 }
 
+.auth-theme-toggle i {
+    transition: transform 0.35s ease, opacity 0.25s ease;
+}
+
+.theme-animating .auth-theme-toggle i,
+.auth-theme-toggle.is-switching-theme i {
+    transform: rotate(180deg) scale(1.08);
+}
+
 .auth-card {
     width: 100%;
     max-width: 420px;
@@ -193,6 +224,12 @@
     padding: 2rem;
     box-shadow: var(--auth-shadow);
     animation: authFadeIn 0.45s ease-out both;
+}
+
+.theme-animating .auth-card,
+.theme-animating .auth-theme-toggle,
+.theme-animating .auth-password-rules {
+    box-shadow: 0 0 0 1px rgba(69, 123, 157, 0.08), 0 16px 36px rgba(29, 53, 87, 0.12);
 }
 
 @keyframes authFadeIn {
