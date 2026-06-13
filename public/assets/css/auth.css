@@ -274,7 +274,6 @@
 }
 
 .theme-animating.theme-to-dark .auth-page .auth-brand-panel,
-.theme-animating.theme-to-dark .auth-page .auth-card,
 .theme-animating.theme-to-dark .auth-page .auth-password-rules,
 .theme-animating.theme-to-dark .auth-page .auth-theme-toggle,
 .theme-animating.theme-to-dark .auth-page .auth-page-footer {
@@ -282,7 +281,6 @@
 }
 
 .theme-animating.theme-to-light .auth-page .auth-brand-panel,
-.theme-animating.theme-to-light .auth-page .auth-card,
 .theme-animating.theme-to-light .auth-page .auth-password-rules,
 .theme-animating.theme-to-light .auth-page .auth-theme-toggle,
 .theme-animating.theme-to-light .auth-page .auth-page-footer {

@@ -232,6 +232,10 @@
     color: var(--lp-dark);
 }
 
+[data-bs-theme="dark"] .landing-hero-btn.main {
+    color: #1d3557;
+}
+
 .landing-hero-btn.main:hover {
     color: var(--lp-dark);
     background: #f8f9fa;

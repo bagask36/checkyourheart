@@ -34,7 +34,7 @@
     <div class="auth-page">
         {{-- Brand panel --}}
         <div class="auth-brand-panel">
-            <div class="auth-brand-content">
+            <div class="auth-brand-content reveal-auth-brand">
                 <a href="{{ route('landing') }}" class="auth-logo">
                     <span class="auth-logo-icon"><i class="fas fa-heart-pulse"></i></span>
                     <span class="auth-logo-text">Check Your Heart</span>
@@ -44,7 +44,7 @@
             </div>
             <div class="auth-features">
                 @foreach(($authContent['features'] ?? collect()) as $feature)
-                <div class="auth-feature-item">
+                <div class="auth-feature-item reveal-auth-feature">
                     <i class="fas {{ $feature->metaValue('icon', 'fa-heart') }}"></i>
                     <span>{{ $feature->body }}</span>
                 </div>
@@ -58,7 +58,7 @@
                 <i class="bx bx-moon fs-20"></i>
             </button>
 
-            <div class="auth-card">
+            <div class="auth-card reveal-auth-card">
                 <div class="auth-card-header">
                     <h2>@yield('form_heading')</h2>
                     <p>@yield('form_subheading')</p>
@@ -68,17 +68,21 @@
             </div>
 
             @hasSection('auth_footer_link')
-                @yield('auth_footer_link')
+                <div class="reveal-auth-footer-link">
+                    @yield('auth_footer_link')
+                </div>
             @endif
 
-            <p class="auth-page-footer">
+            <p class="auth-page-footer reveal-auth-page-footer">
                 &copy; {{ date('Y') }} Check Your Heart
             </p>
         </div>
     </div>
 
     <script src="{{ asset('assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
     <script src="{{ asset('assets/js/theme-persist.js') }}"></script>
+    <script src="{{ asset('assets/js/pages/auth-reveal.js') }}"></script>
     @yield('auth_scripts')
 </body>
 </html>
